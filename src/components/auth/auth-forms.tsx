@@ -66,7 +66,7 @@ export function AuthForms() {
               </div>
             </CardContent>
             <CardFooter className="justify-center text-sm">
-              <p>Não tem uma conta? <TabsTrigger value="signup" asChild><Link href="#" className="font-semibold text-primary underline-offset-4 hover:underline">Crie uma</Link></TabsTrigger></p>
+              <p>Não tem uma conta? <TabsTrigger value="signup" asChild><button className="font-semibold text-primary underline-offset-4 hover:underline">Crie uma</button></TabsTrigger></p>
             </CardFooter>
           </Card>
         </TabsContent>
@@ -114,7 +114,7 @@ export function AuthForms() {
               </div>
             </CardContent>
              <CardFooter className="justify-center text-sm">
-              <p>Já tem uma conta? <TabsTrigger value="login" asChild><Link href="#" className="font-semibold text-primary underline-offset-4 hover:underline">Faça login</Link></TabsTrigger></p>
+              <p>Já tem uma conta? <TabsTrigger value="login" asChild><button className="font-semibold text-primary underline-offset-4 hover:underline">Faça login</button></TabsTrigger></p>
             </CardFooter>
           </Card>
         </TabsContent>
