@@ -1,12 +1,19 @@
 import { DUMMY_JOBS, DUMMY_CANDIDATES_FOR_JOB } from "@/lib/placeholder-data";
 import { CandidateAnalysisClient } from "@/components/candidates/candidate-analysis-client";
+import { Job } from "@/lib/types";
+
+export async function generateStaticParams() {
+  return DUMMY_JOBS.map((job) => ({
+    jobId: job.id,
+  }));
+}
 
 type PageProps = {
   params: { jobId: string };
 };
 
 export default function CandidateAnalysisPage({ params }: PageProps) {
-  const job = DUMMY_JOBS.find(j => j.id === params.jobId);
+  const job = DUMMY_JOBS.find(j => j.id === params.jobId) as Job;
   
   if (!job) {
     return (

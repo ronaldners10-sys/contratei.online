@@ -3,6 +3,12 @@ import { DUMMY_JOBS, DUMMY_COMPANY } from "@/lib/placeholder-data";
 import { notFound } from "next/navigation";
 import { JobDetails } from "@/components/jobs/job-details";
 
+export async function generateStaticParams() {
+  return DUMMY_JOBS.map((job) => ({
+    jobId: job.id,
+  }));
+}
+
 type PageProps = {
   params: { jobId: string };
 };

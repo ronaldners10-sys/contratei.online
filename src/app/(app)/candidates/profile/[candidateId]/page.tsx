@@ -8,6 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Mail, Phone, Linkedin, ExternalLink, Briefcase, DollarSign, BrainCircuit, FileDown } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
+export async function generateStaticParams() {
+  return DUMMY_CANDIDATES_FOR_JOB.map((candidate) => ({
+    candidateId: candidate.id,
+  }));
+}
+
+
 type PageProps = {
   params: { candidateId: string };
 };

@@ -92,7 +92,7 @@ export function CandidateAnalysisClient({ job, candidates }: Props) {
       const mappedResults = results.map((result, index) => {
         // The results should come back in the same order.
         const candidateId = selectedCandidates[index];
-        const candidate = candidates.find(c => c.id === candidateId);
+        const candidate = candidates.find(c => c.id === candidateId) as Candidate;
         return { ...result, candidate };
       });
 
@@ -217,9 +217,9 @@ export function CandidateAnalysisClient({ job, candidates }: Props) {
               {!isLoading && analysisResults.length > 0 && (
                 <div className="space-y-4">
                   {analysisResults.sort((a, b) => b.compatibilityScore - a.compatibilityScore).map(result => (
-                    <div key={result.candidate?.id}>
+                    <div key={result.candidate.id}>
                         <div className="flex justify-between items-center mb-1">
-                            <span className="font-semibold text-sm">{result.candidate?.name}</span>
+                            <span className="font-semibold text-sm">{result.candidate.name}</span>
                             <span className="font-semibold text-sm">{Math.round(result.compatibilityScore * 100)}%</span>
                         </div>
                          <Progress value={result.compatibilityScore * 100} className="h-2" />
