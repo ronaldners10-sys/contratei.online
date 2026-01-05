@@ -12,11 +12,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Menu, Search, Bell } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { AppSidebar } from "./app-sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export function AppHeader() {
   const { user, logout } = useUser();
@@ -63,6 +64,7 @@ export function AppHeader() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-64 p-0">
+            <SheetTitle><VisuallyHidden>Menu</VisuallyHidden></SheetTitle>
             <AppSidebar isMobile />
           </SheetContent>
         </Sheet>
