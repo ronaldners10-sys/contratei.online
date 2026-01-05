@@ -104,6 +104,20 @@ export const DUMMY_APPLICATIONS: Application[] = [
         candidateId: 'cand1',
         dateApplied: '4 dias atrás',
         status: 'Pending'
+    },
+    {
+        id: 'app3',
+        jobId: 'job3',
+        candidateId: 'cand1',
+        dateApplied: '1 semana atrás',
+        status: 'Interviewing'
+    },
+     {
+        id: 'app4',
+        jobId: 'job4',
+        candidateId: 'cand1',
+        dateApplied: '2 semanas atrás',
+        status: 'Rejected'
     }
 ];
 

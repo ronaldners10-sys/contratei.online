@@ -11,7 +11,7 @@ import { JobCard } from "../jobs/job-card";
 
 export function CandidateDashboard() {
   const recommendedJobs = DUMMY_JOBS.slice(0, 3);
-  const recentApplications = DUMMY_APPLICATIONS;
+  const recentApplications = DUMMY_APPLICATIONS.slice(0, 4);
 
   return (
     <div className="space-y-8">
@@ -29,7 +29,7 @@ export function CandidateDashboard() {
         />
         <StatsCard
           title="Candidaturas Ativas"
-          value={recentApplications.length.toString()}
+          value={DUMMY_APPLICATIONS.length.toString()}
           description="Acompanhe o status"
           Icon={FileText}
         />
@@ -79,11 +79,27 @@ export function CandidateDashboard() {
                             <p className="font-semibold">{job.title}</p>
                             <p className="text-sm text-muted-foreground">{job.companyName}</p>
                         </div>
-                        <Badge variant={app.status === 'Reviewed' ? 'default' : 'secondary'} className="bg-blue-100 text-blue-800">{app.status}</Badge>
+                        <Badge 
+                          variant={app.status === 'Reviewed' ? 'default' : app.status === 'Rejected' ? 'destructive' : 'secondary'}
+                          className={
+                          app.status === 'Reviewed' ? 'bg-blue-100 text-blue-800' :
+                          app.status === 'Interviewing' ? 'bg-yellow-100 text-yellow-800' :
+                          app.status === 'Offered' ? 'bg-green-100 text-green-800' : undefined
+                        }
+                        >
+                           {app.status === 'Pending' ? 'Pendente' :
+                         app.status === 'Reviewed' ? 'Analisado' :
+                         app.status === 'Interviewing' ? 'Entrevista' :
+                         app.status === 'Offered' ? 'Oferta' :
+                         'Rejeitado'}
+                        </Badge>
                     </li>
                  )
               })}
             </ul>
+             <Button variant="outline" className="w-full mt-6" asChild>
+                <Link href="/applications">Ver todas as candidaturas</Link>
+            </Button>
           </CardContent>
         </Card>
       </div>

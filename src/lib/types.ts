@@ -55,5 +55,5 @@ export type CandidateAnalysisResult = {
   candidateResume: string;
   compatibilityScore: number;
   analysis: string;
-  candidate?: Candidate;
+  candidate?: Omit<Candidate, 'role' | 'experience' | 'salaryExpectation' | 'resumeUrl'>;
 };

@@ -40,7 +40,7 @@ export function AppSidebar({ isMobile = false }) {
     cn(
       "flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
       {
-        "bg-sidebar-accent text-sidebar-accent-foreground": pathname === href,
+        "bg-sidebar-accent text-sidebar-accent-foreground": pathname.startsWith(href) && (href !== '/dashboard' || pathname === '/dashboard'),
       }
     );
 
