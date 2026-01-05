@@ -1,3 +1,4 @@
+// src/components/jobs/company-job-list.tsx
 "use client";
 
 import { DUMMY_JOBS } from "@/lib/placeholder-data";
@@ -8,9 +9,11 @@ import { Badge } from "@/components/ui/badge";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { useUser } from "@/context/user-context";
 
 export function CompanyJobList() {
-  const companyJobs = DUMMY_JOBS.filter(job => job.companyId === 'comp1');
+  const { user } = useUser();
+  const companyJobs = DUMMY_JOBS.filter(job => job.companyId === user?.id);
 
   return (
     <Card>
@@ -19,9 +22,11 @@ export function CompanyJobList() {
           <CardTitle>Vagas Publicadas</CardTitle>
           <CardDescription>Gerencie suas vagas e veja os candidatos.</CardDescription>
         </div>
-        <Button size="sm" className="gap-1">
-          <PlusCircle className="h-4 w-4" />
-          Nova Vaga
+        <Button size="sm" className="gap-1" asChild>
+          <Link href="/jobs/new">
+            <PlusCircle className="h-4 w-4" />
+            Nova Vaga
+          </Link>
         </Button>
       </CardHeader>
       <CardContent>
@@ -62,7 +67,9 @@ export function CompanyJobList() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Ver Vaga</DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href={`/jobs/${job.id}`}>Ver Vaga</Link>
+                      </DropdownMenuItem>
                       <DropdownMenuItem>Editar</DropdownMenuItem>
                       <DropdownMenuItem className="text-destructive">Desativar</DropdownMenuItem>
                     </DropdownMenuContent>

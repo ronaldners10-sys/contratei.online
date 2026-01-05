@@ -1,4 +1,4 @@
-
+// src/components/layout/app-sidebar.tsx
 "use client";
 
 import Link from "next/link";
@@ -47,7 +47,7 @@ export function AppSidebar({ isMobile = false }) {
     );
 
   const content = (
-    <div className="flex h-full max-h-screen flex-col gap-2">
+    <div className="flex h-full max-h-screen flex-col gap-2 bg-sidebar">
       <div className="flex h-16 items-center border-b border-sidebar-border px-6">
         <Link href="/dashboard">
           <Logo />

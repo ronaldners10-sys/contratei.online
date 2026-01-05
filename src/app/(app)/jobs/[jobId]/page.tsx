@@ -1,4 +1,6 @@
 // src/app/(app)/jobs/[jobId]/page.tsx
+'use client';
+
 import { DUMMY_JOBS, DUMMY_COMPANY } from "@/lib/placeholder-data";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -8,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MapPin, Briefcase, Clock, Building, ExternalLink, CheckSquare } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
+import { useUser } from "@/context/user-context";
 
 type PageProps = {
   params: { jobId: string };
@@ -16,9 +20,18 @@ type PageProps = {
 export default function JobDetailsPage({ params }: PageProps) {
   const job = DUMMY_JOBS.find((j) => j.id === params.jobId);
   const company = DUMMY_COMPANY; // Using dummy company for now
+  const { toast } = useToast();
+  const { user } = useUser();
 
   if (!job) {
     notFound();
+  }
+
+  const handleApply = () => {
+    toast({
+        title: "Sucesso!",
+        description: `Você se candidatou para a vaga de ${job.title}.`,
+    })
   }
 
   return (
@@ -57,7 +70,9 @@ export default function JobDetailsPage({ params }: PageProps) {
               </div>
             </div>
             <div className="w-full shrink-0 sm:w-auto">
-                <Button size="lg" className="w-full">Candidatar-se Agora</Button>
+                {user?.role === 'candidate' && (
+                    <Button size="lg" className="w-full" onClick={handleApply}>Candidatar-se Agora</Button>
+                )}
                 <p className="mt-2 flex items-center justify-center gap-2 text-xs text-muted-foreground">
                     <Clock className="h-3 w-3" />
                     Postado {job.datePosted}

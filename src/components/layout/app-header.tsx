@@ -12,12 +12,31 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Menu, Search, Bell } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { AppSidebar } from "./app-sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+
+const getBreadcrumbName = (part: string, parts: string[], index: number) => {
+    if (part === 'jobs' && parts[index+1] && parts[index+1] !== 'new') return "Detalhes da Vaga";
+    if (part === 'jobs' && parts[index+1] === 'new') return "Nova Vaga";
+    if (part === 'candidates' && parts[index+1] && parts[index+1] !== 'profile') return "Análise de Candidatos";
+    if (part === 'profile' && parts[index-1] === 'candidates') return "Perfil do Candidato";
+    
+    const nameMap: { [key: string]: string } = {
+        'dashboard': 'Dashboard',
+        'jobs': 'Vagas',
+        'applications': 'Minhas Candidaturas',
+        'profile': 'Meu Perfil',
+        'settings': 'Configurações',
+        'candidates': 'Candidatos',
+    }
+
+    return nameMap[part] || part.charAt(0).toUpperCase() + part.slice(1).replace('-', ' ');
+}
+
 
 export function AppHeader() {
   const { user, logout } = useUser();
@@ -25,13 +44,23 @@ export function AppHeader() {
 
   const breadcrumbs = useMemo(() => {
     const parts = pathname.split('/').filter(p => p);
-    if (parts[0] !== 'dashboard') parts.unshift('dashboard');
+    if(parts.length === 0) return [];
     
     let currentPath = '';
     return parts.map((part, index) => {
       currentPath += `/${part}`;
       const isLast = index === parts.length - 1;
-      const name = part.charAt(0).toUpperCase() + part.slice(1).replace('-', ' ');
+      const name = getBreadcrumbName(part, parts, index);
+
+      // Don't show breadcrumb for dynamic ID parts
+      if (index > 0 && (parts[index-1] === 'jobs' || parts[index-1] === 'candidates') && part !== 'new' && part !== 'profile') {
+          return null;
+      }
+       if (index > 1 && parts[index-2] === 'candidates' && parts[index-1] === 'profile') {
+          return null;
+      }
+
+
       return (
         <li key={part}>
           <div className="flex items-center">
@@ -44,7 +73,7 @@ export function AppHeader() {
           </div>
         </li>
       );
-    });
+    }).filter(Boolean);
   }, [pathname]);
 
   if (!user) {
@@ -64,7 +93,9 @@ export function AppHeader() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-64 p-0">
-            <SheetTitle><VisuallyHidden>Menu</VisuallyHidden></SheetTitle>
+             <SheetTitle>
+              <VisuallyHidden>Menu</VisuallyHidden>
+            </SheetTitle>
             <AppSidebar isMobile />
           </SheetContent>
         </Sheet>
@@ -79,7 +110,7 @@ export function AppHeader() {
               </Link>
             </div>
           </li>
-          {breadcrumbs.slice(1)}
+          {breadcrumbs}
         </ol>
       </nav>
 
@@ -115,7 +146,7 @@ export function AppHeader() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild><Link href="/profile">Perfil</Link></DropdownMenuItem>
-            <DropdownMenuItem>Configurações</DropdownMenuItem>
+            <DropdownMenuItem asChild><Link href="/settings">Configurações</Link></DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={logout}>Sair</DropdownMenuItem>
           </DropdownMenuContent>
