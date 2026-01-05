@@ -29,18 +29,17 @@ async function fileToDataUri(file: File): Promise<string> {
   });
 }
 
-// Mock PDF file for demonstration
-const createMockPdf = () => new File([`
-  Resume for ${DUMMY_CANDIDATE.name}
-  Skills: ${DUMMY_CANDIDATE.skills.join(', ')}
-  Experience: ${DUMMY_CANDIDATE.experience[0].title} at ${DUMMY_CANDIDATE.experience[0].company}
-`], "mock_resume.pdf", { type: "application/pdf" });
+// Mock PDF file for demonstration. It's a simple text file, but we give it a PDF extension.
+// The AI model is smart enough to process the text content.
+const createMockPdf = (candidate: Omit<Candidate, 'role' | 'experience' | 'salaryExpectation' | 'resumeUrl'>) => {
+  const resumeContent = `
+    Name: ${candidate.name}
+    Title: ${candidate.title}
+    Skills: ${candidate.skills.join(', ')}
+  `;
+  return new File([resumeContent], "mock_resume.pdf", { type: "application/pdf" });
+};
 
-const DUMMY_CANDIDATE = {
-    name: "Ana Silva",
-    skills: ["React", "Node.js"],
-    experience: [{title: "Developer", company: "Tech Inc"}]
-}
 
 export function CandidateAnalysisClient({ job, candidates }: Props) {
   const [selectedCandidates, setSelectedCandidates] = useState<string[]>([]);
@@ -73,11 +72,15 @@ export function CandidateAnalysisClient({ job, candidates }: Props) {
     setAnalysisResults([]);
 
     try {
-      const mockFile = createMockPdf();
-      const dataUri = await fileToDataUri(mockFile);
+      const selectedCandidateObjects = candidates.filter(c => selectedCandidates.includes(c.id));
 
-      // We use the same mock resume for all selected candidates for this demo
-      const candidateResumes = selectedCandidates.map(() => dataUri);
+      const candidateResumes = await Promise.all(
+        selectedCandidateObjects.map(async (candidate) => {
+           const mockFile = createMockPdf(candidate);
+           const dataUri = await fileToDataUri(mockFile);
+           return dataUri;
+        })
+      );
       
       const results = await filterCandidatesByAIScore({
         jobDescription: job.description,
@@ -87,6 +90,7 @@ export function CandidateAnalysisClient({ job, candidates }: Props) {
 
       // Map results back to candidates
       const mappedResults = results.map((result, index) => {
+        // The results should come back in the same order.
         const candidateId = selectedCandidates[index];
         const candidate = candidates.find(c => c.id === candidateId);
         return { ...result, candidate };
