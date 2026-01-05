@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -14,6 +15,7 @@ import {
   Building,
   FileText
 } from "lucide-react";
+import { ThemeSwitcher } from "./theme-switcher";
 
 const candidateNavItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -40,7 +42,7 @@ export function AppSidebar({ isMobile = false }) {
     cn(
       "flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
       {
-        "bg-sidebar-accent text-sidebar-accent-foreground": pathname.startsWith(href) && (href !== '/dashboard' || pathname === '/dashboard'),
+        "bg-sidebar-accent text-sidebar-accent-foreground": pathname === href || (pathname.startsWith(href) && href !== '/dashboard'),
       }
     );
 
@@ -60,6 +62,9 @@ export function AppSidebar({ isMobile = false }) {
             </Link>
           ))}
         </nav>
+      </div>
+      <div className="mt-auto flex flex-col items-center gap-2 border-t border-sidebar-border p-4">
+          <ThemeSwitcher />
       </div>
     </div>
   );
