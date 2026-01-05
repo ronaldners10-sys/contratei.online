@@ -85,7 +85,7 @@ export function CompanyDashboard() {
                   </div>
                 </div>
                 <Button variant="outline" size="sm" asChild>
-                  <Link href={`/candidates/job1?candidate=${candidate.id}`}>Ver Perfil</Link>
+                  <Link href={`/candidates/profile/${candidate.id}`}>Ver Perfil</Link>
                 </Button>
               </div>
             ))}

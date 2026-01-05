@@ -87,8 +87,7 @@ export default function AllCandidatesPage() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
-                        {/* We don't have a dedicated candidate profile page, so we link to a placeholder */}
-                        <Link href={`/candidates/job1?candidateId=${candidate.id}`}>Ver Perfil</Link>
+                        <Link href={`/candidates/profile/${candidate.id}`}>Ver Perfil</Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem>Enviar Mensagem</DropdownMenuItem>
                     </DropdownMenuContent>
