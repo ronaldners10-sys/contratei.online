@@ -13,6 +13,7 @@ import { Linkedin, Mail } from 'lucide-react';
 export function AuthForms() {
   const { loginAs } = useUser();
   const [role, setRole] = useState<'candidate' | 'company'>('candidate');
+  const [activeTab, setActiveTab] = useState('login');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +22,7 @@ export function AuthForms() {
 
   return (
     <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center bg-background px-4 py-12">
-      <Tabs defaultValue="login" className="w-full max-w-md">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-md">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login">Entrar</TabsTrigger>
           <TabsTrigger value="signup">Criar Conta</TabsTrigger>
@@ -66,7 +67,7 @@ export function AuthForms() {
               </div>
             </CardContent>
             <CardFooter className="justify-center text-sm">
-              <p>Não tem uma conta? <TabsTrigger value="signup" asChild><button className="font-semibold text-primary underline-offset-4 hover:underline">Crie uma</button></TabsTrigger></p>
+              <p>Não tem uma conta? <button onClick={() => setActiveTab('signup')} className="font-semibold text-primary underline-offset-4 hover:underline">Crie uma</button></p>
             </CardFooter>
           </Card>
         </TabsContent>
@@ -114,7 +115,7 @@ export function AuthForms() {
               </div>
             </CardContent>
              <CardFooter className="justify-center text-sm">
-              <p>Já tem uma conta? <TabsTrigger value="login" asChild><button className="font-semibold text-primary underline-offset-4 hover:underline">Faça login</button></TabsTrigger></p>
+              <p>Já tem uma conta? <button onClick={() => setActiveTab('login')} className="font-semibold text-primary underline-offset-4 hover:underline">Faça login</button></p>
             </CardFooter>
           </Card>
         </TabsContent>
